@@ -1,10 +1,78 @@
 from fastapi import FastAPI, Query
 import numpy as np
+from sqlalchemy import create_engine
 from typing import Any, Dict, Optional
 
 from data_layer.data_access.crud.crud_funding import read_funding_entries
 from data_layer.data_access.crud.crud_interest import read_interest_entries
 from data_layer.models.models_orm import Symbol, Coin
+
+from data_layer.data_access.api_client.bybit_client import ByBitClient
+from data_layer.data_access.crud.crud_funding import read_most_recent_update_funding
+from data_layer.data_access.crud.crud_interest import read_most_recent_update_interest
+from data_layer.data_access.crud.crud_open_interest import read_most_recent_update_open_interest
+from data_layer.services.download_data import (
+    catch_latest_funding,
+    catch_latest_open_interest,
+    catch_latest_interest,
+    fill_funding,
+    fill_interest,
+    fill_open_interest
+)
+from data_layer.models.models_orm import Base, Coin, Symbol
+
+
+engine = create_engine('sqlite:///funding_history.db')
+Base.metadata.create_all(engine)
+
+
+client = ByBitClient()
+
+for symbol in Symbol:
+
+    most_recent_funding = read_most_recent_update_funding(symbol)
+
+    if most_recent_funding is not None:
+        catch_latest_funding(
+            client,
+            symbol,
+            most_recent_funding
+        )
+    else:
+        fill_funding(
+            client,
+            symbol
+        )
+    
+    most_recent_oi = read_most_recent_update_open_interest(symbol)
+
+    if most_recent_oi is not None:
+        catch_latest_open_interest(
+            client,
+            symbol,
+            most_recent_oi
+        )
+    else:
+        fill_open_interest(
+            client,
+            symbol
+        )
+
+for coin in Coin:
+
+    most_recent_datetime = read_most_recent_update_interest(coin)
+    
+    if most_recent_datetime is not None:
+        catch_latest_interest(
+            client,
+            coin,
+            most_recent_datetime
+        )
+    else:
+        fill_interest(
+            client,
+            coin
+        )
 
 
 app = FastAPI()

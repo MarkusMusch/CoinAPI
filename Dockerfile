@@ -20,7 +20,7 @@ ENV PYTHONPATH=/app
 COPY . /funding_history.db
 
 # Expose the port the app runs on
-EXPOSE 8050
+EXPOSE 8000
 
 # Command to run the application
 CMD ["poetry", "run", "python", "api/app.py"]
