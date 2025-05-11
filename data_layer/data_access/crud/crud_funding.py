@@ -6,8 +6,8 @@ from sqlalchemy import desc
 from sqlalchemy.exc import SQLAlchemyError
 import logging
 
-from backend.config import Session
-from backend.models.models_orm import FundingRate, Symbol
+from data_layer.config import Session
+from data_layer.models.models_orm import FundingRate, Symbol
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

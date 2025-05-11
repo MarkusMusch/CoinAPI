@@ -2,12 +2,12 @@ from datetime import datetime, timezone
 import logging
 import time
 
-from backend.data_access.api_client.bybit_client import ByBitClient
-from backend.data_access.crud.crud_funding import create_funding_entries
-from backend.data_access.crud.crud_interest import create_interest_entries
-from backend.data_access.crud.crud_open_interest import create_open_interest_entries
-from backend.models.models_api import FundingRequest, OpenInterestRequest
-from backend.models.models_orm import Coin, FundingRate, InterestRate, OpenInterest, Symbol
+from data_layer.data_access.api_client.bybit_client import ByBitClient
+from data_layer.data_access.crud.crud_funding import create_funding_entries
+from data_layer.data_access.crud.crud_interest import create_interest_entries
+from data_layer.data_access.crud.crud_open_interest import create_open_interest_entries
+from data_layer.models.models_api import FundingRequest, OpenInterestRequest
+from data_layer.models.models_orm import Coin, FundingRate, InterestRate, OpenInterest, Symbol
 
 
 # Configure logging

@@ -6,8 +6,8 @@ import numpy as np
 from sqlalchemy import desc
 from sqlalchemy.exc import SQLAlchemyError
 
-from backend.config import Session
-from backend.models.models_orm import Coin, InterestRate
+from data_layer.config import Session
+from data_layer.models.models_orm import Coin, InterestRate
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

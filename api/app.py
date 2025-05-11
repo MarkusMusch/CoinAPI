@@ -2,9 +2,9 @@ from fastapi import FastAPI, Query
 import numpy as np
 from typing import Any, Dict, Optional
 
-from backend.data_access.crud.crud_funding import read_funding_entries
-from backend.data_access.crud.crud_interest import read_interest_entries
-from backend.models.models_orm import Symbol, Coin
+from data_layer.data_access.crud.crud_funding import read_funding_entries
+from data_layer.data_access.crud.crud_interest import read_interest_entries
+from data_layer.models.models_orm import Symbol, Coin
 
 
 app = FastAPI()

@@ -10,14 +10,14 @@ from requests.exceptions import RequestException
 import time
 import logging
 
-from backend.models.models_api import (
+from data_layer.models.models_api import (
     FundingHistoryResponse,
     FundingRequest,
     InterestRateResponse,
     OpenInterestRequest,
     OpenInterestResponse
 )
-from backend.settings import backend_settings
+from data_layer.settings import backend_settings
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
