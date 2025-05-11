@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "funding"
+version = "0.1.0"
+description = "A dashboard showing all relevant data of my trades"
+authors = ["Markus Musch <markus-musch@web.de>"]
+packages = [
+    { include = "api" },
+    { include = "backend" },
+    { include = "frontend"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+dash = "^2.18.2"
+dash-bootstrap-components = "^1.6.0"
+dash-iconify = "^0.1.2"
+dash-mantine-components = "^0.14.7"
+matplotlib = "^3.9.2"
+numpy = "^2.1.1"
+pydantic = "^2.9.0"
+pydantic-settings = "^2.6.1"
+requests = "^2.32.3"
+sqlalchemy = "^2.0.34"
+fastapi = "^0.115.12"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "frontend/tests",
+    "backend/tests"
+]
