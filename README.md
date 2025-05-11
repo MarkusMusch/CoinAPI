@@ -78,4 +78,4 @@ Markus Musch
 
 ### License
 
-See the [LICENSE](LICENSE.txt) file for license rights and limitations (GNU GPLv3).
+See the [LICENSE](LICENSE.txt) file for license rights and limitations (GNU GPLv3).# CoinAPI
