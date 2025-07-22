@@ -81,3 +81,8 @@ class InterestRateResponse(BaseModel):
         """Calculate the cumulative return from the interest rates."""
         _, interest_rates = self.unpacked_data
         return np.cumprod(1 + interest_rates) - 1
+
+class ChartData(BaseModel):
+    data: list[dict[str, str | int]]
+    dataKey: str 
+    series: list[dict[str, str]]

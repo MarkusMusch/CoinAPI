@@ -1,16 +1,21 @@
 from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 from sqlalchemy import create_engine
 from typing import Any, Dict, Optional
 
-from data_layer.data_access.crud.crud_funding import read_funding_entries
-from data_layer.data_access.crud.crud_interest import read_interest_entries
-from data_layer.models.models_orm import Symbol, Coin
-
 from data_layer.data_access.api_client.bybit_client import ByBitClient
-from data_layer.data_access.crud.crud_funding import read_most_recent_update_funding
-from data_layer.data_access.crud.crud_interest import read_most_recent_update_interest
+from data_layer.data_access.crud.crud_funding import (
+    read_funding_entries,
+    read_most_recent_update_funding
+)
+from data_layer.data_access.crud.crud_interest import (
+    read_interest_entries,
+    read_most_recent_update_interest
+)
 from data_layer.data_access.crud.crud_open_interest import read_most_recent_update_open_interest
+from data_layer.models.models_api import ChartData
+from data_layer.models.models_orm import Base, Coin, Symbol
 from data_layer.services.download_data import (
     catch_latest_funding,
     catch_latest_open_interest,
@@ -19,7 +24,6 @@ from data_layer.services.download_data import (
     fill_interest,
     fill_open_interest
 )
-from data_layer.models.models_orm import Base, Coin, Symbol
 
 
 engine = create_engine('sqlite:///funding_history.db')
@@ -57,7 +61,7 @@ for symbol in Symbol:
             client,
             symbol
         )
-
+"""
 for coin in Coin:
 
     most_recent_datetime = read_most_recent_update_interest(coin)
@@ -73,9 +77,18 @@ for coin in Coin:
             client,
             coin
         )
-
+"""
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/")
 def read_root() -> Dict[str, str]:
@@ -179,3 +192,21 @@ def get_interest_rates_cumulative(
         )
     
     return {"title": title, "data": data}
+
+
+@app.get("/chart")
+def read_chart():
+    response = ChartData(
+        data=[
+            { "date": '2025-03-01', "Apples": 400, "Oranges": 300 },
+            { "date": '2025-03-02', "Apples": 300, "Oranges": 500 },
+            { "date": '2025-03-03', "Apples": 450, "Oranges": 350 },
+            { "date": '2025-03-04', "Apples": 500, "Oranges": 400 }
+        ],
+        dataKey="date",
+        series=[
+            { "name": 'Apples', "color": '#1E90FF' },
+            { "name": 'Oranges', "color": '#FFA500' },
+        ]
+    )
+    return response
