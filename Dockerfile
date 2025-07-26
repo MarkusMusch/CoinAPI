@@ -23,4 +23,4 @@ COPY . /funding_history.db
 EXPOSE 8000
 
 # Command to run the application
-CMD ["poetry", "run", "python", "api/app.py"]
+CMD ["poetry", "run", "python", "run_server.py"]
