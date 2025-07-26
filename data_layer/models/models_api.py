@@ -5,6 +5,41 @@ from pydantic import BaseModel
 from typing import List, Tuple
 
 
+class PriceHistoryRequest(BaseModel):
+    """A Pydantic model for the price history request."""
+    category: str
+    symbol: str
+    intervalTime: str
+    endTime: int
+
+
+class KlineItem(BaseModel):
+    """A Pydantic model for a single kline item."""
+    klineTimestamp: int
+    open: str
+    high: str
+    low: str
+    close: str
+    volume: str
+    turnover: str
+
+
+class PriceHistoryResponse(BaseModel):
+    """A Pydantic model for the price history response."""
+    category: str
+    list: List[KlineItem]
+
+    @property
+    def unpacked_data(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        """Unpack the data from the response."""
+        timestamps = np.array([datetime.fromtimestamp(item.klineTimestamp / 1000, tz=timezone.utc) for item in self.list])[::-1]
+        opens = np.array([float(item.open) for item in self.list])[::-1]
+        highs = np.array([float(item.high) for item in self.list])[::-1]
+        lows = np.array([float(item.low) for item in self.list])[::-1]
+        closes = np.array([float(item.close) for item in self.list])[::-1]
+        return timestamps, opens, highs, lows, closes
+
+
 class FundingRequest(BaseModel):
     """A Pydantic model for the funding history request."""
     category: str
